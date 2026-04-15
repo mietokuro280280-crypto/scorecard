@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スコアカード</title>
+<style>
+:root{--blue:#1a73e8;--green:#34a853;--yellow:#f9ab00;--red:#ea4335;--bg:#f1f3f4;--card:#fff;--text:#202124;--sub:#5f6368;--border:#dadce0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.header{background:var(--blue);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.header h1{font-size:1rem;font-weight:700}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.sync-dot{font-size:.9rem;cursor:pointer}
+.header-date{font-size:.75rem;opacity:.85}
+
+.main{padding:12px 12px 76px;max-width:500px;margin:0 auto}
+.tab{display:none}.tab.on{display:block}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;z-index:99}
+.nav-btn{flex:1;padding:9px 0 5px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;color:var(--sub);font-size:.64rem;border:none;background:none}
+.nav-btn.on{color:var(--blue)}
+.nav-btn .ico{font-size:1.2rem}
+
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.card-title{font-size:.78rem;font-weight:700;color:var(--sub);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase}
+
+.date-nav{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.dnav-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:1rem;color:var(--text)}
+.dnav-title{font-weight:700;font-size:.93rem}
+
+.sec-label{font-size:.7rem;font-weight:700;color:var(--blue);background:#e8f0fe;padding:4px 10px;border-radius:8px;margin:-4px -4px 10px;display:block}
+
+.mrow{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
+.mrow:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.mrow-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mrow-name{font-size:.9rem;font-weight:600}
+.badge{font-size:.68rem;padding:2px 7px;border-radius:10px;background:#e8f0fe;color:var(--blue);white-space:nowrap}
+.badge.month{background:#fce8e6;color:var(--red)}
+.badge.daily{background:#e6f4ea;color:var(--green)}
+
+.num-row{display:flex;align-items:center;gap:8px}
+.num-pm{width:36px;height:36px;border:1.5px solid var(--border);border-radius:9px;background:#fff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);flex-shrink:0;user-select:none}
+.num-pm:active{background:var(--bg)}
+.num-inp{flex:1;height:36px;border:1.5px solid var(--border);border-radius:9px;text-align:center;font-size:1rem;font-weight:700;color:var(--text);background:#fff}
+.num-inp:focus{outline:none;border-color:var(--blue)}
+.num-unit{font-size:.78rem;color:var(--sub);min-width:26px}
+
+.tog-row{display:flex;gap:8px}
+.tog-btn{flex:1;padding:9px;border:1.5px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;font-size:.83rem;text-align:center;color:var(--sub);user-select:none}
+.tog-btn.yes{background:#e6f4ea;border-color:var(--green);color:var(--green);font-weight:700}
+.tog-btn.no{background:#fce8e6;border-color:var(--red);color:var(--red);font-weight:700}
+
+.sc-row{display:flex;gap:5px}
+.sc-btn{flex:1;padding:8px 2px;border:1.5px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;font-size:.85rem;text-align:center;color:var(--sub);user-select:none}
+.sc-btn.on{background:#fff8e1;border-color:var(--yellow);color:#e65100;font-weight:700}
+
+.btn-save{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:14px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:6px}
+.btn-save:active{background:#1557b0}
+
+.prog-row{margin-bottom:13px}
+.prog-row:last-child{margin-bottom:0}
+.prog-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.prog-name{font-size:.85rem;font-weight:500}
+.prog-pct{font-size:.82rem;font-weight:700}
+.prog-pct.g{color:var(--green)}.prog-pct.w{color:#e65100}.prog-pct.r{color:var(--red)}
+.prog-bar{height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px}
+.prog-fill.g{background:var(--green)}.prog-fill.w{background:var(--yellow)}.prog-fill.r{background:var(--red)}
+.prog-sub{font-size:.7rem;color:#bbb;margin-top:2px}
+
+.month-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.month-item{background:#f8f9fa;border-radius:10px;padding:10px;text-align:center}
+.month-item-name{font-size:.73rem;color:var(--sub);margin-bottom:4px}
+.month-item-val{font-size:1.5rem;font-weight:800}
+.month-item-val.g{color:var(--green)}.month-item-val.w{color:var(--yellow)}.month-item-val.r{color:var(--red)}
+.month-item-tgt{font-size:.68rem;color:#bbb}
+
+.wt-big{text-align:center;padding:6px 0}
+.wt-num{font-size:2.4rem;font-weight:800}
+.wt-sub{font-size:.75rem;color:var(--sub);margin-top:3px}
+
+.day-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f4f4f4;cursor:pointer}
+.day-row:last-child{border-bottom:none}
+.day-lbl{font-size:.83rem}
+.dots{display:flex;gap:3px}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot.on{background:var(--green)}.dot.off{background:#e0e0e0}
+
+.hw{background:#fff;border-radius:14px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.hw-hd{background:#f8f9ff;padding:9px 14px;font-size:.8rem;font-weight:700;color:var(--blue);border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
+.hd-row{padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f5f5f5;cursor:pointer}
+.hd-lbl{font-size:.83rem}
+.hd-info{font-size:.75rem;color:var(--sub)}
+.hw-sum{background:#f8f9fa;padding:7px 14px;display:flex;justify-content:space-between;font-size:.78rem;font-weight:600;color:var(--sub)}
+
+/* ── Settings ── */
+.set-group{margin-bottom:16px}
+.set-label{display:block;font-size:.8rem;font-weight:600;margin-bottom:6px;color:var(--text)}
+.set-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:.9rem;color:var(--text);background:#fff}
+.set-input:focus{outline:none;border-color:var(--blue)}
+.set-row{display:flex;gap:8px;align-items:center}
+.set-row .set-input{flex:1}
+.btn-sm{padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;font-size:.82rem;white-space:nowrap;color:var(--text)}
+.btn-sm:active{background:var(--bg)}
+.btn-sm.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sync-info{font-size:.78rem;color:var(--sub);margin-top:6px;line-height:1.5}
+.how-to{margin:0;padding-left:20px;font-size:.82rem;line-height:1.9;color:var(--text)}
+.how-to a{color:var(--blue)}
+.how-to li{margin-bottom:2px}
+.step-title{font-weight:700;font-size:.85rem;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.step-title::after{content:'▼';font-size:.7rem;color:var(--sub)}
+.step-title.collapsed::after{content:'▶'}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.status-banner{padding:10px 14px;border-radius:10px;font-size:.82rem;font-weight:600;margin-bottom:10px;text-align:center}
+.status-banner.ok{background:#e6f4ea;color:var(--green)}
+.status-banner.err{background:#fce8e6;color:var(--red)}
+.status-banner.off{background:#f1f3f4;color:var(--sub)}
+
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(16px);background:#333;color:#fff;padding:9px 20px;border-radius:20px;font-size:.83rem;opacity:0;transition:all .25s;pointer-events:none;z-index:200;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;color:var(--sub);padding:48px 16px;font-size:.9rem}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 スコアカード</h1>
+  <div class="hdr-right">
+    <span class="sync-dot" id="syncDot" title="同期状態" onclick="go('settings')">⚫</span>
+    <div class="header-date" id="hdDate"></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ TODAY ══ -->
+  <div class="tab on" id="tab-today">
+    <div class="date-nav">
+      <button class="dnav-btn" onclick="chgDate(-1)">‹</button>
+      <div class="dnav-title" id="todayTitle"></div>
+      <button class="dnav-btn" onclick="chgDate(1)">›</button>
+    </div>
+    <div class="card" id="entryForm"></div>
+    <button class="btn-save" onclick="saveEntry()">保存する</button>
+  </div>
+
+  <!-- ══ WEEKLY ══ -->
+  <div class="tab" id="tab-weekly">
+    <div class="date-nav">
+      <button class="dnav-btn" onclick="chgWeek(-1)">‹</button>
+      <div class="dnav-title" id="weekTitle"></div>
+      <button class="dnav-btn" onclick="chgWeek(1)">›</button>
+    </div>
+    <div id="weekContent"></div>
+  </div>
+
+  <!-- ══ HISTORY ══ -->
+  <div class="tab" id="tab-history">
+    <div id="histContent"></div>
+  </div>
+
+  <!-- ══ SETTINGS ══ -->
+  <div class="tab" id="tab-settings">
+    <div id="syncBanner" class="status-banner off">⚫ 未接続（ローカル保存中）</div>
+
+    <div class="card">
+      <div class="card-title">🔄 Firebase 同期設定</div>
+
+      <div class="set-group">
+        <label class="set-label">Firebase Database URL</label>
+        <input class="set-input" id="fbUrlInput" type="url"
+          placeholder="https://your-app-default-rtdb.firebaseio.com">
+        <div class="sync-info">Firebaseコンソールで取得したURLを貼り付けてください</div>
+      </div>
+
+      <div class="set-group">
+        <label class="set-label">同期キー（全端末で同じキーを入力）</label>
+        <div class="set-row">
+          <input class="set-input" id="syncKeyInput" type="text"
+            style="font-family:monospace;font-size:.78rem" placeholder="自動生成されます">
+          <button class="btn-sm" onclick="copySyncKey()">コピー</button>
+        </div>
+        <div class="sync-info">⚠️ このキーが一致した端末間でデータが共有されます</div>
+      </div>
+
+      <button class="btn-save" onclick="applySettings()">設定を保存して接続</button>
+      <div style="margin-top:8px;text-align:center">
+        <button class="btn-sm" onclick="testConnection()" style="width:100%">接続テスト</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step-title" id="howTitle" onclick="toggleHow()">📋 Firebaseの設定方法（初回のみ）</div>
+      <ol class="how-to" id="howList">
+        <li><a href="https://console.firebase.google.com" target="_blank"><b>console.firebase.google.com</b></a> にアクセス（Googleアカウントでログイン）</li>
+        <li>「プロジェクトを追加」→ 好きな名前を入力 → 作成</li>
+        <li>左メニューの「構築」→「<b>Realtime Database</b>」をクリック</li>
+        <li>「データベースを作成」→「<b>テストモードで開始</b>」→「有効にする」</li>
+        <li>画面上部に表示される <code style="background:#f1f3f4;padding:1px 5px;border-radius:4px">https://xxx-default-rtdb.firebaseio.com</code> をコピー</li>
+        <li>上の「Firebase Database URL」欄に貼り付け →「設定を保存して接続」</li>
+        <li>🟢 になれば完了！スマホでも同じURLとキーを入力すればOK</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💾 データ管理</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn-sm" onclick="exportJSON()">📤 データをエクスポート（JSON）</button>
+        <button class="btn-sm" onclick="document.getElementById('importFile').click()">📥 データをインポート（JSON）</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="bottom-nav">
+  <button class="nav-btn on"  id="nav-today"    onclick="go('today')">   <span class="ico">✏️</span>今日</button>
+  <button class="nav-btn"     id="nav-weekly"   onclick="go('weekly')">  <span class="ico">📊</span>週間</button>
+  <button class="nav-btn"     id="nav-history"  onclick="go('history')"> <span class="ico">📅</span>履歴</button>
+  <button class="nav-btn"     id="nav-settings" onclick="go('settings')"><span class="ico">⚙️</span>設定</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  METRICS
+// ══════════════════════════════════════════════
+const M = [
+  { id:'undou',     name:'運動',             unit:'回',   t:'num',   wt:5,   step:.5,  sec:'週間トラッキング' },
+  { id:'sedori',    name:'せどり',           unit:'分',   t:'num',   wt:300, step:10  },
+  { id:'kodomo',    name:'子供とだけの時間',  unit:'分',   t:'num',   wt:420, step:10  },
+  { id:'yotei',     name:'明日の予定',       unit:'',     t:'bool',  wt:5             },
+  { id:'dokusho',   name:'読書',            unit:'',     t:'bool',  wt:5             },
+  { id:'unko',      name:'うんこ',          unit:'',     t:'bool',  wt:5             },
+  { id:'tanoshisa', name:'楽しさ',          unit:'pt',   t:'score', wt:25            },
+  { id:'sleep',     name:'睡眠時間',         unit:'時間', t:'num',   wt:49,  step:.5  },
+  { id:'kendama',   name:'けん玉',          unit:'分',   t:'num',   wt:900, step:10  },
+  { id:'weight',    name:'体重',            unit:'kg',   t:'weight',tgt:62,maxKg:66,step:.1, sec:'体重' },
+  { id:'koe',       name:'声かけ',          unit:'',     t:'bool',  wt:7,   daily:true, sec:'毎日' },
+  { id:'kyuka',     name:'有給',            unit:'回',   t:'bool',  mt:2,   monthly:true, sec:'月間イベント' },
+  { id:'sasou',     name:'誘い（月1回のみ）', unit:'回',  t:'bool',  mt:1,   monthly:true },
+  { id:'camp',      name:'ソロキャン',       unit:'回',   t:'bool',  mt:1,   monthly:true, note:'春・秋' },
+];
+
+// ══════════════════════════════════════════════
+//  CONFIG & DATA
+// ══════════════════════════════════════════════
+let cfg = {};
+let localData = {};
+let activeTab = 'today';
+let es = null;
+let pollTimer = null;
+
+function loadCfg(){try{return JSON.parse(localStorage.getItem('sc_cfg')||'{}')}catch{return{}}}
+function saveCfg(){localStorage.setItem('sc_cfg',JSON.stringify(cfg))}
+function loadLocal(){try{return JSON.parse(localStorage.getItem('sc_data')||'{}')}catch{return{}}}
+function saveLocal(){localStorage.setItem('sc_data',JSON.stringify(localData))}
+
+function initConfig(){
+  cfg = loadCfg();
+  if(!cfg.syncKey) cfg.syncKey = genUUID();
+  saveCfg();
+}
+
+function genUUID(){
+  try{
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>
+      (c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+  }catch{
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+      const r=Math.random()*16|0; return(c==='x'?r:r&3|8).toString(16);
+    });
+  }
+}
+
+// ══════════════════════════════════════════════
+//  FIREBASE
+// ══════════════════════════════════════════════
+const fbBase = () => cfg.fbUrl && cfg.syncKey
+  ? `${cfg.fbUrl.replace(/\/+$/,'')}/sc/${cfg.syncKey}`
+  : null;
+
+async function fbPut(dateKey, entry){
+  const base = fbBase();
+  if(!base) return;
+  setSyncSt('syncing');
+  try{
+    const r = await fetch(`${base}/${dateKey}.json`,{
+      method:'PUT', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(entry)
+    });
+    if(!r.ok) throw new Error(r.status);
+    setSyncSt('ok');
+  }catch(e){ setSyncSt('err'); }
+}
+
+async function fbLoad(silent=false){
+  const base = fbBase();
+  if(!base){ setSyncSt('off'); return false; }
+  if(!silent) setSyncSt('syncing');
+  try{
+    const r = await fetch(`${base}.json`);
+    if(!r.ok) throw new Error(r.status);
+    const data = await r.json();
+    if(data && typeof data==='object'){
+      localData = {...localData, ...data};
+      saveLocal();
+    }
+    setSyncSt('ok');
+    rerenderCurrent();
+    return true;
+  }catch(e){
+    setSyncSt('err');
+    return false;
+  }
+}
+
+function fbStream(){
+  if(es){ es.close(); es=null; }
+  if(pollTimer){ clearInterval(pollTimer); pollTimer=null; }
+  const base = fbBase();
+  if(!base) return;
+
+  try{
+    es = new EventSource(`${base}.json`);
+    es.addEventListener('put', evt=>{
+      try{
+        const {path, data} = JSON.parse(evt.data);
+        if(path==='/' && data && typeof data==='object'){
+          localData = {...localData, ...data};
+          saveLocal();
+        } else if(path && path.length>1){
+          const key = path.slice(1);
+          if(data===null) delete localData[key];
+          else localData[key]=data;
+          saveLocal();
+        }
+        setSyncSt('ok');
+        rerenderCurrent();
+      }catch{}
+    });
+    es.addEventListener('cancel',()=>setSyncSt('err'));
+    es.onerror = ()=>{
+      setSyncSt('err');
+      // SSEが失敗した場合はポーリングにフォールバック
+      if(!pollTimer) pollTimer = setInterval(()=>fbLoad(true), 15000);
+    };
+  }catch{
+    // SSE非対応の場合はポーリング
+    pollTimer = setInterval(()=>fbLoad(true), 15000);
+    fbLoad(true);
+  }
+}
+
+// ページフォーカス時に再同期
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden && fbBase()) fbLoad(true);
+});
+
+// ══════════════════════════════════════════════
+//  SYNC STATUS UI
+// ══════════════════════════════════════════════
+function setSyncSt(st){
+  const dot = document.getElementById('syncDot');
+  const banner = document.getElementById('syncBanner');
+  const map = {
+    ok:      {dot:'🟢', cls:'ok',  txt:'🟢 Firebase に接続済み'},
+    syncing: {dot:'🔄', cls:'ok',  txt:'🔄 同期中...'},
+    err:     {dot:'🔴', cls:'err', txt:'🔴 接続エラー（設定を確認してください）'},
+    off:     {dot:'⚫', cls:'off', txt:'⚫ 未接続（ローカル保存中）'},
+  };
+  const s = map[st]||map.off;
+  if(dot) dot.textContent = s.dot;
+  if(banner){ banner.textContent=s.txt; banner.className=`status-banner ${s.cls}`; }
+}
+
+// ══════════════════════════════════════════════
+//  DATA ACCESSORS
+// ══════════════════════════════════════════════
+function getE(k){ return {...(localData[k]||{})} }
+function putE(k, e){
+  localData[k] = e;
+  saveLocal();
+  fbPut(k, e);
+}
+
+// ══════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════
+function today(){ return fmt(new Date()) }
+function fmt(d){ return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}` }
+function p2(n){ return String(n).padStart(2,'0') }
+function addD(s,n){ const d=new Date(s+'T00:00:00'); d.setDate(d.getDate()+n); return fmt(d) }
+function mon(s){ const d=new Date(s+'T00:00:00'),day=d.getDay(); return addD(s,-(day===0?6:day-1)) }
+function jaDate(s){
+  const d=new Date(s+'T00:00:00'),w=['日','月','火','水','木','金','土'];
+  return `${d.getMonth()+1}月${d.getDate()}日(${w[d.getDay()]})`
+}
+function ymStr(s){ const d=new Date(s+'T00:00:00'); return `${d.getFullYear()}-${p2(d.getMonth()+1)}` }
+
+// ══════════════════════════════════════════════
+//  TAB ROUTING
+// ══════════════════════════════════════════════
+function go(tab){
+  activeTab = tab;
+  ['today','weekly','history','settings'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('on',t===tab);
+    document.getElementById('nav-'+t).classList.toggle('on',t===tab);
+  });
+  if(tab==='today')    renderToday();
+  if(tab==='weekly')   renderWeekly();
+  if(tab==='history')  renderHistory();
+  if(tab==='settings') renderSettings();
+}
+
+function rerenderCurrent(){
+  if(activeTab==='today')    renderToday();
+  if(activeTab==='weekly')   renderWeekly();
+  if(activeTab==='history')  renderHistory();
+}
+
+// ══════════════════════════════════════════════
+//  TODAY TAB
+// ══════════════════════════════════════════════
+let curDate = today();
+let editE   = {};
+
+function chgDate(n){ curDate=addD(curDate,n); renderToday() }
+
+function renderToday(){
+  document.getElementById('hdDate').textContent    = jaDate(today());
+  document.getElementById('todayTitle').textContent = jaDate(curDate);
+  editE = getE(curDate);
+  const f = document.getElementById('entryForm');
+  f.innerHTML = '';
+  let curSec = '';
+  M.forEach(m=>{
+    if(m.sec && m.sec!==curSec){
+      curSec=m.sec;
+      const lbl=document.createElement('span');
+      lbl.className='sec-label'; lbl.textContent=m.sec;
+      f.appendChild(lbl);
+    }
+    const row=document.createElement('div'); row.className='mrow';
+    let badge='',bclass='';
+    if(m.t==='weight') badge=`目標${m.tgt}kg / MAX${m.maxKg}kg`;
+    else if(m.monthly){badge=`月${m.mt}回`+(m.note?` (${m.note})`:''); bclass='month';}
+    else if(m.daily)  {badge='毎日'; bclass='daily';}
+    else if(m.wt)      badge=`週目標 ${m.wt}${m.unit||'回'}`;
+    const v=editE[m.id];
+    let inp='';
+    if(m.t==='bool'){
+      const y=v===1;
+      inp=`<div class="tog-row">
+        <button class="tog-btn${!y&&v!==undefined?' no':''}" onclick="setBool('${m.id}',0,this)">✗ なし</button>
+        <button class="tog-btn${y?' yes':''}" onclick="setBool('${m.id}',1,this)">✓ あり</button>
+      </div>`;
+    }else if(m.t==='score'){
+      const sv=v||0;
+      inp='<div class="sc-row">'+[1,2,3,4,5].map(n=>
+        `<button class="sc-btn${sv>=n?' on':''}" onclick="setScore('${m.id}',${n},this)">${n}★</button>`
+      ).join('')+'</div>';
+    }else{
+      const dv=(v!=null&&v!=='')?v:'';
+      inp=`<div class="num-row">
+        <button class="num-pm" onclick="adj('${m.id}',-${m.step||1})">−</button>
+        <input class="num-inp" type="number" id="inp_${m.id}" value="${dv}" step="${m.step||1}" min="0" placeholder="0">
+        <button class="num-pm" onclick="adj('${m.id}',${m.step||1})">+</button>
+        <span class="num-unit">${m.unit}</span>
+      </div>`;
+    }
+    row.innerHTML=`<div class="mrow-top">
+      <span class="mrow-name">${m.name}</span>
+      ${badge?`<span class="badge ${bclass}">${badge}</span>`:''}
+    </div>${inp}`;
+    f.appendChild(row);
+  });
+}
+
+function setBool(id,val,btn){
+  editE[id]=val;
+  btn.closest('.mrow').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('yes','no'));
+  btn.classList.add(val?'yes':'no');
+}
+function setScore(id,val,btn){
+  editE[id]=val;
+  btn.closest('.mrow').querySelectorAll('.sc-btn').forEach((b,i)=>b.classList.toggle('on',i<val));
+}
+function adj(id,delta){
+  const inp=document.getElementById('inp_'+id);
+  const m=M.find(x=>x.id===id);
+  let v=Math.max(0,(parseFloat(inp.value)||0)+delta);
+  if(m.step) v=Math.round(v/m.step)*m.step;
+  inp.value=v; editE[id]=v;
+}
+function saveEntry(){
+  M.forEach(m=>{
+    if(m.t!=='bool'&&m.t!=='score'){
+      const inp=document.getElementById('inp_'+m.id);
+      if(!inp) return;
+      const v=inp.value.trim();
+      if(v===''&&m.t==='weight') delete editE[m.id];
+      else editE[m.id]=v===''?0:parseFloat(v);
+    }
+  });
+  putE(curDate, editE);
+  showToast('保存しました ✓');
+}
+
+// ══════════════════════════════════════════════
+//  WEEKLY TAB
+// ══════════════════════════════════════════════
+let wkOff = 0;
+function chgWeek(n){ wkOff+=n; renderWeekly() }
+
+function wkDates(off){
+  const s=mon(addD(today(),off*7));
+  return Array.from({length:7},(_,i)=>addD(s,i));
+}
+function wkTotals(dates){
+  const t={};
+  M.forEach(m=>t[m.id]=0);
+  dates.forEach(dt=>{
+    const e=localData[dt]||{};
+    M.forEach(m=>{ const v=e[m.id]; if(v!=null&&v!=='') t[m.id]+=parseFloat(v)||0 });
+  });
+  return t;
+}
+function monthTotals(ym){
+  const t={};
+  M.filter(m=>m.monthly).forEach(m=>t[m.id]=0);
+  Object.keys(localData).filter(k=>ymStr(k)===ym).forEach(dt=>{
+    const e=localData[dt]||{};
+    M.filter(m=>m.monthly).forEach(m=>{
+      const v=e[m.id]; if(v!=null&&v!=='') t[m.id]+=parseFloat(v)||0;
+    });
+  });
+  return t;
+}
+
+function renderWeekly(){
+  const dates=wkDates(wkOff);
+  const sd=new Date(dates[0]+'T00:00:00'), ed=new Date(dates[6]+'T00:00:00');
+  document.getElementById('weekTitle').textContent=
+    `${sd.getMonth()+1}/${sd.getDate()} 〜 ${ed.getMonth()+1}/${ed.getDate()}`;
+  const T=wkTotals(dates), c=document.getElementById('weekContent');
+  c.innerHTML='';
+
+  // 体重
+  const wm=M.find(m=>m.id==='weight');
+  const ws=dates.map(d=>localData[d]?.weight).filter(v=>v!=null&&v!=='');
+  const lw=ws.length?ws[ws.length-1]:null;
+  const wCard=document.createElement('div'); wCard.className='card';
+  const wcol=lw?(lw<=wm.tgt?'var(--green)':lw<=wm.maxKg?'var(--yellow)':'var(--red)'):'#ccc';
+  wCard.innerHTML=`<div class="wt-big">
+    <div class="wt-num" style="color:${wcol}">${lw||'--'} kg</div>
+    <div class="wt-sub">目標 ${wm.tgt}kg ／ MAX ${wm.maxKg}kg</div>
+  </div>`;
+  c.appendChild(wCard);
+
+  // 週間進捗
+  const pCard=document.createElement('div'); pCard.className='card';
+  pCard.innerHTML='<div class="card-title">週間進捗</div>';
+  M.filter(m=>m.wt&&!m.monthly&&m.id!=='weight').forEach(m=>{
+    const tot=T[m.id], tgt=m.wt, pct=tgt?tot/tgt*100:0;
+    const cls=pct>=100?'g':pct>=60?'w':'r';
+    const div=document.createElement('div'); div.className='prog-row';
+    div.innerHTML=`<div class="prog-hd"><span class="prog-name">${m.name}</span>
+      <span class="prog-pct ${cls}">${Math.round(pct)}%</span></div>
+      <div class="prog-bar"><div class="prog-fill ${cls}" style="width:${Math.min(100,pct)}%"></div></div>
+      <div class="prog-sub">今週 ${tot}${m.unit||'回'} ／ 目標 ${tgt}${m.unit||'回'}</div>`;
+    pCard.appendChild(div);
+  });
+  c.appendChild(pCard);
+
+  // 月間イベント
+  const curYm=ymStr(dates[3]);
+  const mt=monthTotals(curYm);
+  const mCard=document.createElement('div'); mCard.className='card';
+  const ym=new Date(dates[0]+'T00:00:00');
+  mCard.innerHTML=`<div class="card-title">${ym.getMonth()+1}月の記録</div><div class="month-grid"></div>`;
+  const grid=mCard.querySelector('.month-grid');
+  M.filter(m=>m.monthly).forEach(m=>{
+    const val=mt[m.id], tgt=m.mt;
+    const cls=val>=tgt?'g':val>0?'w':'r';
+    const item=document.createElement('div'); item.className='month-item';
+    item.innerHTML=`<div class="month-item-name">${m.name}${m.note?`<br><small style="color:#bbb">${m.note}</small>`:''}</div>
+      <div class="month-item-val ${cls}">${val}</div>
+      <div class="month-item-tgt">月${tgt}回</div>`;
+    grid.appendChild(item);
+  });
+  c.appendChild(mCard);
+
+  // 日別
+  const bools=M.filter(m=>m.t==='bool'&&!m.monthly);
+  const dCard=document.createElement('div'); dCard.className='card';
+  dCard.innerHTML='<div class="card-title">日別チェック</div>';
+  dates.forEach(d=>{
+    const e=localData[d]||{}, dd=new Date(d+'T00:00:00'), w=['日','月','火','水','木','金','土'];
+    const lbl=`${dd.getMonth()+1}/${dd.getDate()}(${w[dd.getDay()]})`;
+    const dots=bools.map(m=>`<div class="dot ${e[m.id]===1?'on':'off'}" title="${m.name}"></div>`).join('');
+    const info=[e.undou?`運動${e.undou}`:'',e.kendama?`けん玉${e.kendama}分`:'',e.sleep?`${e.sleep}h`:''].filter(Boolean).join(' ');
+    const row=document.createElement('div'); row.className='day-row';
+    row.innerHTML=`<span class="day-lbl">${lbl}${info?` <span style="color:#bbb;font-size:.7rem">${info}</span>`:''}</span><div class="dots">${dots}</div>`;
+    row.onclick=()=>{ curDate=d; go('today') };
+    dCard.appendChild(row);
+  });
+  c.appendChild(dCard);
+}
+
+// ══════════════════════════════════════════════
+//  HISTORY TAB
+// ══════════════════════════════════════════════
+function renderHistory(){
+  const all=Object.keys(localData).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)).sort();
+  if(!all.length){ document.getElementById('histContent').innerHTML='<div class="empty">まだデータがありません</div>'; return; }
+  const wmap={};
+  all.forEach(d=>{ const ws=mon(d); if(!wmap[ws])wmap[ws]=[]; wmap[ws].push(d) });
+  const c=document.getElementById('histContent'); c.innerHTML='';
+  Object.keys(wmap).sort().reverse().forEach(ws=>{
+    const days=wmap[ws].sort(), T=wkTotals(days);
+    const sd=new Date(ws+'T00:00:00'), ed=new Date(addD(ws,6)+'T00:00:00');
+    const title=`${sd.getMonth()+1}/${sd.getDate()} 〜 ${ed.getMonth()+1}/${ed.getDate()}`;
+    const ach=M.filter(m=>m.wt&&!m.monthly&&m.id!=='weight').filter(m=>T[m.id]>=m.wt).length;
+    const tot=M.filter(m=>m.wt&&!m.monthly&&m.id!=='weight').length;
+    const card=document.createElement('div'); card.className='hw';
+    card.innerHTML=`<div class="hw-hd"><span>${title}</span><span>${ach}/${tot} 達成</span></div>`;
+    days.forEach(d=>{
+      const e=localData[d]||{}, dd=new Date(d+'T00:00:00'), w=['日','月','火','水','木','金','土'];
+      const parts=[e.undou?`運動${e.undou}`:'',e.sedori?`せどり${e.sedori}分`:'',e.kendama?`けん玉${e.kendama}分`:'',e.sleep?`睡眠${e.sleep}h`:'',e.weight?`${e.weight}kg`:''].filter(Boolean);
+      const row=document.createElement('div'); row.className='hd-row';
+      row.innerHTML=`<span class="hd-lbl">${dd.getMonth()+1}月${dd.getDate()}日(${w[dd.getDay()]})</span><span class="hd-info">${parts.join(' · ')}</span>`;
+      row.onclick=()=>{ curDate=d; go('today') };
+      card.appendChild(row);
+    });
+    const sr=document.createElement('div'); sr.className='hw-sum';
+    sr.innerHTML=`<span>週合計</span><span>運動${T.undou} せどり${T.sedori}分 けん玉${T.kendama}分</span>`;
+    card.appendChild(sr);
+    c.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  SETTINGS TAB
+// ══════════════════════════════════════════════
+function renderSettings(){
+  document.getElementById('fbUrlInput').value  = cfg.fbUrl   || '';
+  document.getElementById('syncKeyInput').value = cfg.syncKey || '';
+  setSyncSt(fbBase() ? 'ok' : 'off');
+}
+
+function applySettings(){
+  const url = document.getElementById('fbUrlInput').value.trim();
+  const key = document.getElementById('syncKeyInput').value.trim() || cfg.syncKey;
+  if(!url){ showToast('Firebase URLを入力してください'); return; }
+  cfg.fbUrl    = url;
+  cfg.syncKey  = key;
+  saveCfg();
+  showToast('設定を保存しました');
+  fbStream();
+  fbLoad();
+}
+
+async function testConnection(){
+  const url = document.getElementById('fbUrlInput').value.trim();
+  const key = document.getElementById('syncKeyInput').value.trim() || cfg.syncKey;
+  if(!url){ showToast('URLを入力してください'); return; }
+  showToast('接続テスト中...');
+  try{
+    const r = await fetch(`${url.replace(/\/+$/,'')}/sc/${key}/ping.json`,{
+      method:'PUT', body:JSON.stringify({t: Date.now()})
+    });
+    if(r.ok){ showToast('🟢 接続成功！'); setSyncSt('ok'); }
+    else showToast(`🔴 エラー: HTTP ${r.status}`);
+  }catch(e){
+    showToast('🔴 接続失敗: '+e.message);
+  }
+}
+
+function copySyncKey(){
+  const val = document.getElementById('syncKeyInput').value || cfg.syncKey;
+  navigator.clipboard?.writeText(val).then(()=>showToast('コピーしました ✓'))
+    .catch(()=>{
+      document.getElementById('syncKeyInput').select();
+      showToast('キーを手動でコピーしてください');
+    });
+}
+
+let howCollapsed = false;
+function toggleHow(){
+  howCollapsed = !howCollapsed;
+  document.getElementById('howList').style.display  = howCollapsed ? 'none' : '';
+  document.getElementById('howTitle').classList.toggle('collapsed', howCollapsed);
+}
+
+// ══════════════════════════════════════════════
+//  EXPORT / IMPORT
+// ══════════════════════════════════════════════
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(localData, null, 2)], {type:'application/json'});
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `scorecard_${today()}.json`;
+  a.click();
+}
+function importJSON(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    try{
+      const data = JSON.parse(e.target.result);
+      localData = {...localData, ...data};
+      saveLocal();
+      // Firebase にもアップロード
+      if(fbBase()){
+        setSyncSt('syncing');
+        const base = fbBase();
+        fetch(`${base}.json`,{method:'PATCH',body:JSON.stringify(data)})
+          .then(()=>setSyncSt('ok')).catch(()=>setSyncSt('err'));
+      }
+      rerenderCurrent();
+      showToast('インポートしました ✓');
+    }catch{ showToast('ファイルの読み込みに失敗しました'); }
+    evt.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2000);
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+initConfig();
+localData = loadLocal();
+renderToday();
+setSyncSt(fbBase()?'syncing':'off');
+if(fbBase()){ fbLoad(); fbStream(); }
+</script>
+</body>
+</html>
