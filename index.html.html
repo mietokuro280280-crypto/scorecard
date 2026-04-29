@@ -9,90 +9,93 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-.header{background:var(--blue);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.header h1{font-size:1rem;font-weight:700}
+.header{background:var(--blue);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.header h1{font-size:.95rem;font-weight:700}
 .hdr-right{display:flex;align-items:center;gap:8px}
 .sync-dot{font-size:.9rem;cursor:pointer}
-.header-date{font-size:.75rem;opacity:.85}
+.header-date{font-size:.72rem;opacity:.85}
 
-.main{padding:12px 12px 76px;max-width:500px;margin:0 auto}
+.main{padding:8px 8px 62px;max-width:500px;margin:0 auto}
 .tab{display:none}.tab.on{display:block}
 
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;z-index:99}
-.nav-btn{flex:1;padding:9px 0 5px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;color:var(--sub);font-size:.64rem;border:none;background:none}
-.nav-btn.on{color:var(--blue)}
-.nav-btn .ico{font-size:1.2rem}
+.nav-btn{flex:1;padding:8px 0 4px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;color:var(--sub);font-size:.62rem;border:none;background:none}
+.nav-btn.on{color:var(--blue)}.nav-btn .ico{font-size:1.15rem}
 
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.card-title{font-size:.78rem;font-weight:700;color:var(--sub);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase}
+/* ── Date nav ── */
+.date-nav{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:8px 12px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.dnav-btn{background:none;border:1px solid var(--border);border-radius:7px;padding:4px 10px;cursor:pointer;font-size:1rem;color:var(--text)}
+.dnav-title{font-weight:700;font-size:.9rem}
 
-.date-nav{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
-.dnav-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:1rem;color:var(--text)}
-.dnav-title{font-weight:700;font-size:.93rem}
+/* ── Compact grids ── */
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.cg3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:6px}
+.cg4{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:6px}
+.cg-full{margin-bottom:6px}
 
-.sec-label{font-size:.7rem;font-weight:700;color:var(--blue);background:#e8f0fe;padding:4px 10px;border-radius:8px;margin:-4px -4px 10px;display:block}
+/* ── Number card ── */
+.ci{background:#fff;border-radius:11px;padding:7px 8px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.ci-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.ci-name{font-size:.7rem;font-weight:600;color:var(--text)}
+.ci-tgt{font-size:.58rem;color:#bbb}
+.cn-row{display:flex;align-items:center;gap:3px}
+.cn-btn{width:26px;height:26px;border:1.5px solid var(--border);border-radius:7px;background:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;user-select:none;color:var(--text)}
+.cn-btn:active{background:var(--bg)}
+.cn-inp{flex:1;height:26px;border:1.5px solid var(--border);border-radius:7px;text-align:center;font-size:.88rem;font-weight:700;color:var(--text);background:#fff;min-width:0}
+.cn-inp:focus{outline:none;border-color:var(--blue)}
+.cn-unit{font-size:.6rem;color:var(--sub);min-width:14px;text-align:right;flex-shrink:0}
 
-.mrow{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
-.mrow:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
-.mrow-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.mrow-name{font-size:.9rem;font-weight:600}
-.badge{font-size:.68rem;padding:2px 7px;border-radius:10px;background:#e8f0fe;color:var(--blue);white-space:nowrap}
-.badge.month{background:#fce8e6;color:var(--red)}
-.badge.daily{background:#e6f4ea;color:var(--green)}
+/* ── Bool card ── */
+.cb-item{display:flex;flex-direction:column;align-items:center;gap:3px;background:#fff;border-radius:11px;padding:8px 4px;box-shadow:0 1px 3px rgba(0,0,0,.07);cursor:pointer;user-select:none;border:1.5px solid transparent;transition:background .12s,border-color .12s}
+.cb-item.yes{background:#e6f4ea;border-color:var(--green)}
+.cb-chk{font-size:1.35rem;line-height:1}
+.cb-name{font-size:.6rem;color:var(--sub);text-align:center;line-height:1.2}
+.cb-item.yes .cb-name{color:var(--green);font-weight:600}
+.cb-badge{font-size:.52rem;color:#bbb;margin-top:1px}
 
-.num-row{display:flex;align-items:center;gap:8px}
-.num-pm{width:36px;height:36px;border:1.5px solid var(--border);border-radius:9px;background:#fff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);flex-shrink:0;user-select:none}
-.num-pm:active{background:var(--bg)}
-.num-inp{flex:1;height:36px;border:1.5px solid var(--border);border-radius:9px;text-align:center;font-size:1rem;font-weight:700;color:var(--text);background:#fff}
-.num-inp:focus{outline:none;border-color:var(--blue)}
-.num-unit{font-size:.78rem;color:var(--sub);min-width:26px}
+/* ── Score ── */
+.cs-wrap{background:#fff;border-radius:11px;padding:7px 8px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.cs-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.cs-name{font-size:.7rem;font-weight:600}
+.cs-tgt{font-size:.58rem;color:#bbb}
+.cs-row{display:flex;gap:4px}
+.cs-btn{flex:1;padding:5px 2px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.8rem;text-align:center;color:var(--sub);user-select:none}
+.cs-btn.on{background:#fff8e1;border-color:var(--yellow);color:#e65100;font-weight:700}
 
-.tog-row{display:flex;gap:8px}
-.tog-btn{flex:1;padding:9px;border:1.5px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;font-size:.83rem;text-align:center;color:var(--sub);user-select:none}
-.tog-btn.yes{background:#e6f4ea;border-color:var(--green);color:var(--green);font-weight:700}
-.tog-btn.no{background:#fce8e6;border-color:var(--red);color:var(--red);font-weight:700}
-
-.sc-row{display:flex;gap:5px}
-.sc-btn{flex:1;padding:8px 2px;border:1.5px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;font-size:.85rem;text-align:center;color:var(--sub);user-select:none}
-.sc-btn.on{background:#fff8e1;border-color:var(--yellow);color:#e65100;font-weight:700}
-
-.btn-save{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:14px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:6px}
+/* ── Save ── */
+.btn-save{width:100%;padding:11px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:4px}
 .btn-save:active{background:#1557b0}
 
-.prog-row{margin-bottom:13px}
-.prog-row:last-child{margin-bottom:0}
+/* ── Weekly / History ── */
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.card-title{font-size:.78rem;font-weight:700;color:var(--sub);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase}
+.prog-row{margin-bottom:13px}.prog-row:last-child{margin-bottom:0}
 .prog-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.prog-name{font-size:.85rem;font-weight:500}
-.prog-pct{font-size:.82rem;font-weight:700}
+.prog-name{font-size:.85rem;font-weight:500}.prog-pct{font-size:.82rem;font-weight:700}
 .prog-pct.g{color:var(--green)}.prog-pct.w{color:#e65100}.prog-pct.r{color:var(--red)}
 .prog-bar{height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
 .prog-fill{height:100%;border-radius:4px}
 .prog-fill.g{background:var(--green)}.prog-fill.w{background:var(--yellow)}.prog-fill.r{background:var(--red)}
 .prog-sub{font-size:.7rem;color:#bbb;margin-top:2px}
-
 .month-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .month-item{background:#f8f9fa;border-radius:10px;padding:10px;text-align:center}
 .month-item-name{font-size:.73rem;color:var(--sub);margin-bottom:4px}
 .month-item-val{font-size:1.5rem;font-weight:800}
 .month-item-val.g{color:var(--green)}.month-item-val.w{color:var(--yellow)}.month-item-val.r{color:var(--red)}
 .month-item-tgt{font-size:.68rem;color:#bbb}
-
 .wt-big{text-align:center;padding:6px 0}
 .wt-num{font-size:2.4rem;font-weight:800}
 .wt-sub{font-size:.75rem;color:var(--sub);margin-top:3px}
-
 .day-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f4f4f4;cursor:pointer}
 .day-row:last-child{border-bottom:none}
 .day-lbl{font-size:.83rem}
 .dots{display:flex;gap:3px}
 .dot{width:8px;height:8px;border-radius:50%}
 .dot.on{background:var(--green)}.dot.off{background:#e0e0e0}
-
 .hw{background:#fff;border-radius:14px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
 .hw-hd{background:#f8f9ff;padding:9px 14px;font-size:.8rem;font-weight:700;color:var(--blue);border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
 .hd-row{padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f5f5f5;cursor:pointer}
-.hd-lbl{font-size:.83rem}
-.hd-info{font-size:.75rem;color:var(--sub)}
+.hd-lbl{font-size:.83rem}.hd-info{font-size:.75rem;color:var(--sub)}
 .hw-sum{background:#f8f9fa;padding:7px 14px;display:flex;justify-content:space-between;font-size:.78rem;font-weight:600;color:var(--sub)}
 
 /* ── Settings ── */
@@ -107,18 +110,15 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 .btn-sm.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
 .sync-info{font-size:.78rem;color:var(--sub);margin-top:6px;line-height:1.5}
 .how-to{margin:0;padding-left:20px;font-size:.82rem;line-height:1.9;color:var(--text)}
-.how-to a{color:var(--blue)}
-.how-to li{margin-bottom:2px}
+.how-to a{color:var(--blue)}.how-to li{margin-bottom:2px}
 .step-title{font-weight:700;font-size:.85rem;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .step-title::after{content:'▼';font-size:.7rem;color:var(--sub)}
 .step-title.collapsed::after{content:'▶'}
-.divider{height:1px;background:var(--border);margin:12px 0}
 .status-banner{padding:10px 14px;border-radius:10px;font-size:.82rem;font-weight:600;margin-bottom:10px;text-align:center}
 .status-banner.ok{background:#e6f4ea;color:var(--green)}
 .status-banner.err{background:#fce8e6;color:var(--red)}
 .status-banner.off{background:#f1f3f4;color:var(--sub)}
-
-.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(16px);background:#333;color:#fff;padding:9px 20px;border-radius:20px;font-size:.83rem;opacity:0;transition:all .25s;pointer-events:none;z-index:200;white-space:nowrap}
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(16px);background:#333;color:#fff;padding:9px 20px;border-radius:20px;font-size:.83rem;opacity:0;transition:all .25s;pointer-events:none;z-index:200;white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .empty{text-align:center;color:var(--sub);padding:48px 16px;font-size:.9rem}
 </style>
@@ -142,7 +142,7 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
       <div class="dnav-title" id="todayTitle"></div>
       <button class="dnav-btn" onclick="chgDate(1)">›</button>
     </div>
-    <div class="card" id="entryForm"></div>
+    <div id="entryForm"></div>
     <button class="btn-save" onclick="saveEntry()">保存する</button>
   </div>
 
@@ -164,33 +164,26 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
   <!-- ══ SETTINGS ══ -->
   <div class="tab" id="tab-settings">
     <div id="syncBanner" class="status-banner off">⚫ 未接続（ローカル保存中）</div>
-
     <div class="card">
       <div class="card-title">🔄 Firebase 同期設定</div>
-
       <div class="set-group">
         <label class="set-label">Firebase Database URL</label>
-        <input class="set-input" id="fbUrlInput" type="url"
-          placeholder="https://your-app-default-rtdb.firebaseio.com">
+        <input class="set-input" id="fbUrlInput" type="url" placeholder="https://your-app-default-rtdb.firebaseio.com">
         <div class="sync-info">Firebaseコンソールで取得したURLを貼り付けてください</div>
       </div>
-
       <div class="set-group">
         <label class="set-label">同期キー（全端末で同じキーを入力）</label>
         <div class="set-row">
-          <input class="set-input" id="syncKeyInput" type="text"
-            style="font-family:monospace;font-size:.78rem" placeholder="自動生成されます">
+          <input class="set-input" id="syncKeyInput" type="text" style="font-family:monospace;font-size:.78rem" placeholder="自動生成されます">
           <button class="btn-sm" onclick="copySyncKey()">コピー</button>
         </div>
         <div class="sync-info">⚠️ このキーが一致した端末間でデータが共有されます</div>
       </div>
-
       <button class="btn-save" onclick="applySettings()">設定を保存して接続</button>
       <div style="margin-top:8px;text-align:center">
         <button class="btn-sm" onclick="testConnection()" style="width:100%">接続テスト</button>
       </div>
     </div>
-
     <div class="card">
       <div class="step-title" id="howTitle" onclick="toggleHow()">📋 Firebaseの設定方法（初回のみ）</div>
       <ol class="how-to" id="howList">
@@ -203,7 +196,6 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
         <li>🟢 になれば完了！スマホでも同じURLとキーを入力すればOK</li>
       </ol>
     </div>
-
     <div class="card">
       <div class="card-title">💾 データ管理</div>
       <div style="display:flex;flex-direction:column;gap:8px">
@@ -214,7 +206,7 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
     </div>
   </div>
 
-</div><!-- /main -->
+</div>
 
 <div class="bottom-nav">
   <button class="nav-btn on"  id="nav-today"    onclick="go('today')">   <span class="ico">✏️</span>今日</button>
@@ -229,20 +221,20 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 //  METRICS
 // ══════════════════════════════════════════════
 const M = [
-  { id:'undou',     name:'運動',             unit:'回',   t:'num',   wt:5,   step:.5,  sec:'週間トラッキング' },
-  { id:'sedori',    name:'せどり',           unit:'分',   t:'num',   wt:300, step:10  },
-  { id:'kodomo',    name:'子供とだけの時間',  unit:'分',   t:'num',   wt:420, step:10  },
-  { id:'yotei',     name:'明日の予定',       unit:'',     t:'bool',  wt:5             },
-  { id:'dokusho',   name:'読書',            unit:'',     t:'bool',  wt:5             },
-  { id:'unko',      name:'うんこ',          unit:'',     t:'bool',  wt:5             },
-  { id:'tanoshisa', name:'楽しさ',          unit:'pt',   t:'score', wt:25            },
-  { id:'sleep',     name:'睡眠時間',         unit:'時間', t:'num',   wt:49,  step:.5  },
-  { id:'kendama',   name:'けん玉',          unit:'分',   t:'num',   wt:900, step:10  },
-  { id:'weight',    name:'体重',            unit:'kg',   t:'weight',tgt:62,maxKg:66,step:.1, sec:'体重' },
-  { id:'koe',       name:'声かけ',          unit:'',     t:'bool',  wt:7,   daily:true, sec:'毎日' },
-  { id:'kyuka',     name:'有給',            unit:'回',   t:'bool',  mt:2,   monthly:true, sec:'月間イベント' },
-  { id:'sasou',     name:'誘い（月1回のみ）', unit:'回',  t:'bool',  mt:1,   monthly:true },
-  { id:'camp',      name:'ソロキャン',       unit:'回',   t:'bool',  mt:1,   monthly:true, note:'春・秋' },
+  { id:'undou',     name:'運動',             unit:'回',   t:'num',   wt:5,   step:.5,  grp:'num' },
+  { id:'sleep',     name:'睡眠時間',         unit:'時間', t:'num',   wt:49,  step:.5,  grp:'num' },
+  { id:'sedori',    name:'せどり',           unit:'分',   t:'num',   wt:300, step:10,  grp:'num' },
+  { id:'kendama',   name:'けん玉',           unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
+  { id:'kodomo',    name:'子供との時間',      unit:'分',   t:'num',   wt:420, step:10,  grp:'num' },
+  { id:'weight',    name:'体重',             unit:'kg',   t:'weight',tgt:62, maxKg:66, step:.1,  grp:'num' },
+  { id:'yotei',     name:'明日の予定',        unit:'',     t:'bool',  wt:5,   grp:'bool' },
+  { id:'dokusho',   name:'読書',             unit:'',     t:'bool',  wt:5,   grp:'bool' },
+  { id:'unko',      name:'うんこ',           unit:'',     t:'bool',  wt:5,   grp:'bool' },
+  { id:'koe',       name:'声かけ',           unit:'',     t:'bool',  wt:7,   daily:true, grp:'bool' },
+  { id:'tanoshisa', name:'楽しさ',           unit:'pt',   t:'score', wt:25,  grp:'score' },
+  { id:'kyuka',     name:'有給',             unit:'回',   t:'bool',  mt:2,   monthly:true, grp:'month' },
+  { id:'sasou',     name:'誘い',             unit:'回',   t:'bool',  mt:1,   monthly:true, grp:'month' },
+  { id:'camp',      name:'ソロキャン',        unit:'回',   t:'bool',  mt:1,   monthly:true, note:'春・秋', grp:'month' },
 ];
 
 // ══════════════════════════════════════════════
@@ -323,7 +315,6 @@ function fbStream(){
   if(pollTimer){ clearInterval(pollTimer); pollTimer=null; }
   const base = fbBase();
   if(!base) return;
-
   try{
     es = new EventSource(`${base}.json`);
     es.addEventListener('put', evt=>{
@@ -345,17 +336,14 @@ function fbStream(){
     es.addEventListener('cancel',()=>setSyncSt('err'));
     es.onerror = ()=>{
       setSyncSt('err');
-      // SSEが失敗した場合はポーリングにフォールバック
       if(!pollTimer) pollTimer = setInterval(()=>fbLoad(true), 15000);
     };
   }catch{
-    // SSE非対応の場合はポーリング
     pollTimer = setInterval(()=>fbLoad(true), 15000);
     fbLoad(true);
   }
 }
 
-// ページフォーカス時に再同期
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden && fbBase()) fbLoad(true);
 });
@@ -423,7 +411,7 @@ function rerenderCurrent(){
 }
 
 // ══════════════════════════════════════════════
-//  TODAY TAB
+//  TODAY TAB  ── コンパクトグリッドレイアウト
 // ══════════════════════════════════════════════
 let curDate = today();
 let editE   = {};
@@ -431,79 +419,122 @@ let editE   = {};
 function chgDate(n){ curDate=addD(curDate,n); renderToday() }
 
 function renderToday(){
-  document.getElementById('hdDate').textContent    = jaDate(today());
+  document.getElementById('hdDate').textContent     = jaDate(today());
   document.getElementById('todayTitle').textContent = jaDate(curDate);
   editE = getE(curDate);
   const f = document.getElementById('entryForm');
   f.innerHTML = '';
-  let curSec = '';
-  M.forEach(m=>{
-    if(m.sec && m.sec!==curSec){
-      curSec=m.sec;
-      const lbl=document.createElement('span');
-      lbl.className='sec-label'; lbl.textContent=m.sec;
-      f.appendChild(lbl);
-    }
-    const row=document.createElement('div'); row.className='mrow';
-    let badge='',bclass='';
-    if(m.t==='weight') badge=`目標${m.tgt}kg / MAX${m.maxKg}kg`;
-    else if(m.monthly){badge=`月${m.mt}回`+(m.note?` (${m.note})`:''); bclass='month';}
-    else if(m.daily)  {badge='毎日'; bclass='daily';}
-    else if(m.wt)      badge=`週目標 ${m.wt}${m.unit||'回'}`;
-    const v=editE[m.id];
-    let inp='';
-    if(m.t==='bool'){
-      const y=v===1;
-      inp=`<div class="tog-row">
-        <button class="tog-btn${!y&&v!==undefined?' no':''}" onclick="setBool('${m.id}',0,this)">✗ なし</button>
-        <button class="tog-btn${y?' yes':''}" onclick="setBool('${m.id}',1,this)">✓ あり</button>
-      </div>`;
-    }else if(m.t==='score'){
-      const sv=v||0;
-      inp='<div class="sc-row">'+[1,2,3,4,5].map(n=>
-        `<button class="sc-btn${sv>=n?' on':''}" onclick="setScore('${m.id}',${n},this)">${n}★</button>`
-      ).join('')+'</div>';
-    }else{
-      const dv=(v!=null&&v!=='')?v:'';
-      inp=`<div class="num-row">
-        <button class="num-pm" onclick="adj('${m.id}',-${m.step||1})">−</button>
-        <input class="num-inp" type="number" id="inp_${m.id}" value="${dv}" step="${m.step||1}" min="0" placeholder="0">
-        <button class="num-pm" onclick="adj('${m.id}',${m.step||1})">+</button>
-        <span class="num-unit">${m.unit}</span>
-      </div>`;
-    }
-    row.innerHTML=`<div class="mrow-top">
-      <span class="mrow-name">${m.name}</span>
-      ${badge?`<span class="badge ${bclass}">${badge}</span>`:''}
-    </div>${inp}`;
-    f.appendChild(row);
+
+  // ── 数値・体重（2列グリッド）──
+  const numMs = M.filter(m => m.grp === 'num');
+  const g2 = document.createElement('div'); g2.className = 'cg2';
+  numMs.forEach(m => {
+    const v = editE[m.id];
+    const dv = (v != null && v !== '') ? v : '';
+    let tgtTxt = '';
+    if(m.t === 'weight') tgtTxt = `目標${m.tgt}kg`;
+    else if(m.wt) tgtTxt = `週${m.wt}${m.unit||'回'}`;
+    const card = document.createElement('div'); card.className = 'ci';
+    card.innerHTML = `<div class="ci-head">
+      <span class="ci-name">${m.name}</span>
+      <span class="ci-tgt">${tgtTxt}</span>
+    </div>
+    <div class="cn-row">
+      <button class="cn-btn" onclick="adj('${m.id}',-${m.step||1})">−</button>
+      <input class="cn-inp" type="number" id="inp_${m.id}" value="${dv}" step="${m.step||1}" min="0" placeholder="0">
+      <span class="cn-unit">${m.unit}</span>
+      <button class="cn-btn" onclick="adj('${m.id}',${m.step||1})">+</button>
+    </div>`;
+    g2.appendChild(card);
   });
+  f.appendChild(g2);
+
+  // ── ブール：週間・毎日（4列）──
+  const boolMs = M.filter(m => m.grp === 'bool');
+  if(boolMs.length){
+    const g4 = document.createElement('div'); g4.className = 'cg4';
+    boolMs.forEach(m => {
+      const yes = editE[m.id] === 1;
+      const card = document.createElement('div');
+      card.className = `cb-item${yes ? ' yes' : ''}`;
+      card.innerHTML = `<span class="cb-chk">${yes ? '✅' : '⬜'}</span>
+        <span class="cb-name">${m.name}</span>
+        <span class="cb-badge">${m.daily ? '毎日' : `週${m.wt}回`}</span>`;
+      card.onclick = () => {
+        const nv = editE[m.id] === 1 ? 0 : 1;
+        editE[m.id] = nv;
+        card.classList.toggle('yes', nv === 1);
+        card.querySelector('.cb-chk').textContent = nv === 1 ? '✅' : '⬜';
+        const nameEl = card.querySelector('.cb-name');
+        if(nv === 1){ nameEl.style.color = 'var(--green)'; nameEl.style.fontWeight = '600'; }
+        else { nameEl.style.color = ''; nameEl.style.fontWeight = ''; }
+      };
+      g4.appendChild(card);
+    });
+    f.appendChild(g4);
+  }
+
+  // ── 楽しさ（スコア）──
+  const sm = M.find(m => m.grp === 'score');
+  if(sm){
+    const sv = editE[sm.id] || 0;
+    const sw = document.createElement('div'); sw.className = 'cs-wrap cg-full';
+    sw.innerHTML = `<div class="cs-head">
+      <span class="cs-name">${sm.name}</span>
+      <span class="cs-tgt">週目標 ${sm.wt}pt</span>
+    </div>
+    <div class="cs-row">${[1,2,3,4,5].map(n =>
+      `<button class="cs-btn${sv >= n ? ' on' : ''}" onclick="setScore('${sm.id}',${n},this)">${n}★</button>`
+    ).join('')}</div>`;
+    f.appendChild(sw);
+  }
+
+  // ── 月間イベント（3列）──
+  const monthMs = M.filter(m => m.grp === 'month');
+  if(monthMs.length){
+    const gm = document.createElement('div'); gm.className = 'cg3';
+    monthMs.forEach(m => {
+      const yes = editE[m.id] === 1;
+      const card = document.createElement('div');
+      card.className = `cb-item${yes ? ' yes' : ''}`;
+      const note = m.note ? `<br><small style="color:#aaa;font-size:.5rem">${m.note}</small>` : '';
+      card.innerHTML = `<span class="cb-chk">${yes ? '✅' : '⬜'}</span>
+        <span class="cb-name">${m.name}${note}</span>
+        <span class="cb-badge">月${m.mt}回</span>`;
+      card.onclick = () => {
+        const nv = editE[m.id] === 1 ? 0 : 1;
+        editE[m.id] = nv;
+        card.classList.toggle('yes', nv === 1);
+        card.querySelector('.cb-chk').textContent = nv === 1 ? '✅' : '⬜';
+        const nameEl = card.querySelector('.cb-name');
+        if(nv === 1){ nameEl.style.color = 'var(--green)'; nameEl.style.fontWeight = '600'; }
+        else { nameEl.style.color = ''; nameEl.style.fontWeight = ''; }
+      };
+      gm.appendChild(card);
+    });
+    f.appendChild(gm);
+  }
 }
 
-function setBool(id,val,btn){
-  editE[id]=val;
-  btn.closest('.mrow').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('yes','no'));
-  btn.classList.add(val?'yes':'no');
+function setScore(id, val, btn){
+  editE[id] = val;
+  btn.closest('.cs-row').querySelectorAll('.cs-btn').forEach((b,i) => b.classList.toggle('on', i < val));
 }
-function setScore(id,val,btn){
-  editE[id]=val;
-  btn.closest('.mrow').querySelectorAll('.sc-btn').forEach((b,i)=>b.classList.toggle('on',i<val));
-}
-function adj(id,delta){
-  const inp=document.getElementById('inp_'+id);
-  const m=M.find(x=>x.id===id);
-  let v=Math.max(0,(parseFloat(inp.value)||0)+delta);
-  if(m.step) v=Math.round(v/m.step)*m.step;
-  inp.value=v; editE[id]=v;
+function adj(id, delta){
+  const inp = document.getElementById('inp_'+id);
+  const m = M.find(x => x.id === id);
+  let v = Math.max(0, (parseFloat(inp.value)||0) + delta);
+  if(m.step) v = Math.round(v / m.step) * m.step;
+  inp.value = v; editE[id] = v;
 }
 function saveEntry(){
-  M.forEach(m=>{
-    if(m.t!=='bool'&&m.t!=='score'){
-      const inp=document.getElementById('inp_'+m.id);
+  M.forEach(m => {
+    if(m.t !== 'bool' && m.t !== 'score'){
+      const inp = document.getElementById('inp_'+m.id);
       if(!inp) return;
-      const v=inp.value.trim();
-      if(v===''&&m.t==='weight') delete editE[m.id];
-      else editE[m.id]=v===''?0:parseFloat(v);
+      const v = inp.value.trim();
+      if(v === '' && m.t === 'weight') delete editE[m.id];
+      else editE[m.id] = v === '' ? 0 : parseFloat(v);
     }
   });
   putE(curDate, editE);
@@ -594,7 +625,7 @@ function renderWeekly(){
   });
   c.appendChild(mCard);
 
-  // 日別
+  // 日別チェック
   const bools=M.filter(m=>m.t==='bool'&&!m.monthly);
   const dCard=document.createElement('div'); dCard.className='card';
   dCard.innerHTML='<div class="card-title">日別チェック</div>';
@@ -715,7 +746,6 @@ function importJSON(evt){
       const data = JSON.parse(e.target.result);
       localData = {...localData, ...data};
       saveLocal();
-      // Firebase にもアップロード
       if(fbBase()){
         setSyncSt('syncing');
         const base = fbBase();
