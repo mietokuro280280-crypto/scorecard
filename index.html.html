@@ -66,32 +66,37 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 .btn-save{width:100%;padding:11px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:4px}
 .btn-save:active{background:#1557b0}
 
-/* ── Weekly / History ── */
+/* ── Weekly compact ── */
+.wk-title{font-size:.63rem;font-weight:700;color:var(--sub);margin:0 0 4px 2px;letter-spacing:.06em;text-transform:uppercase}
+.wp-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:7px}
+.wp-item{background:#fff;border-radius:9px;padding:6px 7px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.wp-name{font-size:.62rem;font-weight:600;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wp-vals{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+.wp-cur{font-size:.8rem;font-weight:700}
+.wp-cur.g{color:var(--green)}.wp-cur.w{color:var(--yellow)}.wp-cur.r{color:var(--red)}
+.wp-pct{font-size:.63rem;font-weight:700}
+.wp-pct.g{color:var(--green)}.wp-pct.w{color:#e65100}.wp-pct.r{color:var(--red)}
+.wp-bar{height:3px;background:#f0f0f0;border-radius:2px;overflow:hidden}
+.wp-fill{height:100%;border-radius:2px}
+.wp-fill.g{background:var(--green)}.wp-fill.w{background:var(--yellow)}.wp-fill.r{background:var(--red)}
+/* ── Daily bool mini-table ── */
+.dbool-wrap{background:#fff;border-radius:9px;padding:7px 8px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:7px}
+.dbool-grid{display:grid;grid-template-columns:3.2em repeat(7,1fr);gap:2px 3px;align-items:center}
+.dbool-label{font-size:.58rem;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dbool-day{font-size:.55rem;color:var(--sub);text-align:center;font-weight:600;line-height:1.15;padding-bottom:1px}
+.dbool-dot{width:12px;height:12px;border-radius:50%;margin:2px auto;cursor:pointer;transition:transform .1s}
+.dbool-dot:active{transform:scale(.85)}
+.dbool-dot.on{background:var(--green)}.dbool-dot.off{background:#e4e4e4}
+/* ── Monthly compact ── */
+.mc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:7px}
+.mc-item{background:#fff;border-radius:9px;padding:6px 5px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.mc-name{font-size:.6rem;color:var(--sub);margin-bottom:2px;line-height:1.2}
+.mc-val{font-size:1.25rem;font-weight:800;line-height:1}
+.mc-val.g{color:var(--green)}.mc-val.w{color:var(--yellow)}.mc-val.r{color:var(--red)}
+.mc-tgt{font-size:.55rem;color:#bbb;margin-top:1px}
+/* ── History ── */
 .card{background:#fff;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .card-title{font-size:.78rem;font-weight:700;color:var(--sub);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase}
-.prog-row{margin-bottom:13px}.prog-row:last-child{margin-bottom:0}
-.prog-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.prog-name{font-size:.85rem;font-weight:500}.prog-pct{font-size:.82rem;font-weight:700}
-.prog-pct.g{color:var(--green)}.prog-pct.w{color:#e65100}.prog-pct.r{color:var(--red)}
-.prog-bar{height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
-.prog-fill{height:100%;border-radius:4px}
-.prog-fill.g{background:var(--green)}.prog-fill.w{background:var(--yellow)}.prog-fill.r{background:var(--red)}
-.prog-sub{font-size:.7rem;color:#bbb;margin-top:2px}
-.month-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.month-item{background:#f8f9fa;border-radius:10px;padding:10px;text-align:center}
-.month-item-name{font-size:.73rem;color:var(--sub);margin-bottom:4px}
-.month-item-val{font-size:1.5rem;font-weight:800}
-.month-item-val.g{color:var(--green)}.month-item-val.w{color:var(--yellow)}.month-item-val.r{color:var(--red)}
-.month-item-tgt{font-size:.68rem;color:#bbb}
-.wt-big{text-align:center;padding:6px 0}
-.wt-num{font-size:2.4rem;font-weight:800}
-.wt-sub{font-size:.75rem;color:var(--sub);margin-top:3px}
-.day-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f4f4f4;cursor:pointer}
-.day-row:last-child{border-bottom:none}
-.day-lbl{font-size:.83rem}
-.dots{display:flex;gap:3px}
-.dot{width:8px;height:8px;border-radius:50%}
-.dot.on{background:var(--green)}.dot.off{background:#e0e0e0}
 .hw{background:#fff;border-radius:14px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
 .hw-hd{background:#f8f9ff;padding:9px 14px;font-size:.8rem;font-weight:700;color:var(--blue);border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
 .hd-row{padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f5f5f5;cursor:pointer}
@@ -580,66 +585,88 @@ function renderWeekly(){
   const T=wkTotals(dates), c=document.getElementById('weekContent');
   c.innerHTML='';
 
-  // 体重
+  // ── 週間進捗（2列コンパクトグリッド）──
+  const wpWrap=document.createElement('div');
+  wpWrap.innerHTML='<div class="wk-title">週間進捗</div>';
+  const wpGrid=document.createElement('div'); wpGrid.className='wp-grid';
+
+  // 体重（先頭に）
   const wm=M.find(m=>m.id==='weight');
   const ws=dates.map(d=>localData[d]?.weight).filter(v=>v!=null&&v!=='');
-  const lw=ws.length?ws[ws.length-1]:null;
-  const wCard=document.createElement('div'); wCard.className='card';
-  const wcol=lw?(lw<=wm.tgt?'var(--green)':lw<=wm.maxKg?'var(--yellow)':'var(--red)'):'#ccc';
-  wCard.innerHTML=`<div class="wt-big">
-    <div class="wt-num" style="color:${wcol}">${lw||'--'} kg</div>
-    <div class="wt-sub">目標 ${wm.tgt}kg ／ MAX ${wm.maxKg}kg</div>
-  </div>`;
-  c.appendChild(wCard);
+  const lw=ws.length?parseFloat(ws[ws.length-1]):null;
+  const wcls=lw?(lw<=wm.tgt?'g':lw<=wm.maxKg?'w':'r'):'';
+  const wItem=document.createElement('div'); wItem.className='wp-item';
+  wItem.innerHTML=`<div class="wp-name">体重</div>
+    <div class="wp-vals">
+      <span class="wp-cur ${wcls}">${lw!=null?lw+' kg':'-- kg'}</span>
+      <span style="font-size:.6rem;color:#bbb">目標${wm.tgt}kg</span>
+    </div>
+    <div class="wp-bar"><div class="wp-fill ${wcls}" style="width:${lw!=null?Math.min(100,Math.max(0,(wm.maxKg-lw)/(wm.maxKg-wm.tgt+.001)*100)):0}%"></div></div>`;
+  wpGrid.appendChild(wItem);
 
-  // 週間進捗
-  const pCard=document.createElement('div'); pCard.className='card';
-  pCard.innerHTML='<div class="card-title">週間進捗</div>';
   M.filter(m=>m.wt&&!m.monthly&&m.id!=='weight').forEach(m=>{
     const tot=T[m.id], tgt=m.wt, pct=tgt?tot/tgt*100:0;
     const cls=pct>=100?'g':pct>=60?'w':'r';
-    const div=document.createElement('div'); div.className='prog-row';
-    div.innerHTML=`<div class="prog-hd"><span class="prog-name">${m.name}</span>
-      <span class="prog-pct ${cls}">${Math.round(pct)}%</span></div>
-      <div class="prog-bar"><div class="prog-fill ${cls}" style="width:${Math.min(100,pct)}%"></div></div>
-      <div class="prog-sub">今週 ${tot}${m.unit||'回'} ／ 目標 ${tgt}${m.unit||'回'}</div>`;
-    pCard.appendChild(div);
+    const item=document.createElement('div'); item.className='wp-item';
+    item.innerHTML=`<div class="wp-name">${m.name}</div>
+      <div class="wp-vals">
+        <span class="wp-cur ${cls}">${tot}${m.unit||''}</span>
+        <span class="wp-pct ${cls}">${Math.round(pct)}%</span>
+      </div>
+      <div class="wp-bar"><div class="wp-fill ${cls}" style="width:${Math.min(100,pct)}%"></div></div>`;
+    wpGrid.appendChild(item);
   });
-  c.appendChild(pCard);
+  wpWrap.appendChild(wpGrid);
+  c.appendChild(wpWrap);
 
-  // 月間イベント
+  // ── 日別チェック（mini横テーブル）──
+  const bools=M.filter(m=>m.t==='bool'&&!m.monthly);
+  const dWrap=document.createElement('div'); dWrap.className='dbool-wrap';
+  const dTitle=document.createElement('div'); dTitle.className='wk-title'; dTitle.textContent='日別チェック';
+  const tbl=document.createElement('div'); tbl.className='dbool-grid';
+  const w7=['日','月','火','水','木','金','土'];
+  // ヘッダー行
+  tbl.appendChild(document.createElement('div')); // 空セル
+  dates.forEach(d=>{
+    const dd=new Date(d+'T00:00:00');
+    const hd=document.createElement('div'); hd.className='dbool-day';
+    hd.innerHTML=`${dd.getDate()}<br>${w7[dd.getDay()]}`;
+    tbl.appendChild(hd);
+  });
+  // bool行
+  bools.forEach(m=>{
+    const lbl=document.createElement('div'); lbl.className='dbool-label'; lbl.textContent=m.name;
+    tbl.appendChild(lbl);
+    dates.forEach(d=>{
+      const e=localData[d]||{};
+      const dot=document.createElement('div'); dot.className=`dbool-dot ${e[m.id]===1?'on':'off'}`;
+      dot.title=`${m.name} ${d}`;
+      dot.onclick=()=>{ curDate=d; go('today') };
+      tbl.appendChild(dot);
+    });
+  });
+  dWrap.appendChild(dTitle);
+  dWrap.appendChild(tbl);
+  c.appendChild(dWrap);
+
+  // ── 月間イベント（3列コンパクト）──
   const curYm=ymStr(dates[3]);
   const mt=monthTotals(curYm);
-  const mCard=document.createElement('div'); mCard.className='card';
-  const ym=new Date(dates[0]+'T00:00:00');
-  mCard.innerHTML=`<div class="card-title">${ym.getMonth()+1}月の記録</div><div class="month-grid"></div>`;
-  const grid=mCard.querySelector('.month-grid');
+  const mWrap=document.createElement('div');
+  const mym=new Date(dates[0]+'T00:00:00');
+  mWrap.innerHTML=`<div class="wk-title">${mym.getMonth()+1}月の記録</div>`;
+  const mcGrid=document.createElement('div'); mcGrid.className='mc-grid';
   M.filter(m=>m.monthly).forEach(m=>{
     const val=mt[m.id], tgt=m.mt;
     const cls=val>=tgt?'g':val>0?'w':'r';
-    const item=document.createElement('div'); item.className='month-item';
-    item.innerHTML=`<div class="month-item-name">${m.name}${m.note?`<br><small style="color:#bbb">${m.note}</small>`:''}</div>
-      <div class="month-item-val ${cls}">${val}</div>
-      <div class="month-item-tgt">月${tgt}回</div>`;
-    grid.appendChild(item);
+    const item=document.createElement('div'); item.className='mc-item';
+    item.innerHTML=`<div class="mc-name">${m.name}${m.note?`<br><small style="color:#bbb;font-size:.5rem">${m.note}</small>`:''}</div>
+      <div class="mc-val ${cls}">${val}</div>
+      <div class="mc-tgt">月${tgt}回</div>`;
+    mcGrid.appendChild(item);
   });
-  c.appendChild(mCard);
-
-  // 日別チェック
-  const bools=M.filter(m=>m.t==='bool'&&!m.monthly);
-  const dCard=document.createElement('div'); dCard.className='card';
-  dCard.innerHTML='<div class="card-title">日別チェック</div>';
-  dates.forEach(d=>{
-    const e=localData[d]||{}, dd=new Date(d+'T00:00:00'), w=['日','月','火','水','木','金','土'];
-    const lbl=`${dd.getMonth()+1}/${dd.getDate()}(${w[dd.getDay()]})`;
-    const dots=bools.map(m=>`<div class="dot ${e[m.id]===1?'on':'off'}" title="${m.name}"></div>`).join('');
-    const info=[e.undou?`運動${e.undou}`:'',e.kendama?`けん玉${e.kendama}分`:'',e.sleep?`${e.sleep}h`:''].filter(Boolean).join(' ');
-    const row=document.createElement('div'); row.className='day-row';
-    row.innerHTML=`<span class="day-lbl">${lbl}${info?` <span style="color:#bbb;font-size:.7rem">${info}</span>`:''}</span><div class="dots">${dots}</div>`;
-    row.onclick=()=>{ curDate=d; go('today') };
-    dCard.appendChild(row);
-  });
-  c.appendChild(dCard);
+  mWrap.appendChild(mcGrid);
+  c.appendChild(mWrap);
 }
 
 // ══════════════════════════════════════════════
