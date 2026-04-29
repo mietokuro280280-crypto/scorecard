@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>スコアカード</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>スコアカード v3</title>
 <style>
 :root{--blue:#1a73e8;--green:#34a853;--yellow:#f9ab00;--red:#ea4335;--bg:#f1f3f4;--card:#fff;--text:#202124;--sub:#5f6368;--border:#dadce0}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -126,12 +129,51 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(16px);background:#333;color:#fff;padding:9px 20px;border-radius:20px;font-size:.83rem;opacity:0;transition:all .25s;pointer-events:none;z-index:200;white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .empty{text-align:center;color:var(--sub);padding:48px 16px;font-size:.9rem}
+
+/* ── スマホ画面の高さに応じた縮小 ── */
+@media(max-height:780px){
+  .main{padding:5px 6px 56px}
+  .date-nav{padding:6px 10px;margin-bottom:5px}
+  .wp-item{padding:5px 6px}
+  .wp-grid{gap:3px;margin-bottom:5px}
+  .wp-name{font-size:.6rem}
+  .wp-cur{font-size:.75rem}
+  .dbool-wrap{padding:5px 7px;margin-bottom:5px}
+  .dbool-dot{width:11px;height:11px;margin:1px auto}
+  .mc-grid{gap:3px;margin-bottom:5px}
+  .mc-val{font-size:1.1rem}
+  .cg2{gap:4px;margin-bottom:4px}
+  .cg4{gap:4px;margin-bottom:4px}
+  .cg3{gap:4px;margin-bottom:4px}
+  .ci{padding:5px 7px}
+  .cn-btn{width:24px;height:24px}
+  .cn-inp{height:24px;font-size:.82rem}
+  .cb-item{padding:6px 3px}
+  .cb-chk{font-size:1.2rem}
+  .cb-name{font-size:.58rem}
+  .cs-wrap{padding:5px 7px}
+  .cs-btn{padding:4px 2px;font-size:.75rem}
+  .btn-save{padding:9px}
+  .wk-title{margin-bottom:3px}
+}
+@media(max-height:680px){
+  .wp-item{padding:4px 5px}
+  .wp-name{margin-bottom:1px}
+  .wp-vals{margin-bottom:1px}
+  .wp-bar{height:2px}
+  .dbool-dot{width:10px;height:10px}
+  .dbool-day{font-size:.5rem}
+  .dbool-label{font-size:.55rem}
+  .wk-title{font-size:.58rem;margin-bottom:2px}
+  .mc-item{padding:4px}
+  .mc-val{font-size:1rem}
+}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>📊 スコアカード</h1>
+  <h1>📊 スコアカード <span style="font-size:.6rem;opacity:.6;font-weight:400">v3</span></h1>
   <div class="hdr-right">
     <span class="sync-dot" id="syncDot" title="同期状態" onclick="go('settings')">⚫</span>
     <div class="header-date" id="hdDate"></div>
