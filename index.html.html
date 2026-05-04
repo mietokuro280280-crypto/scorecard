@@ -452,7 +452,7 @@ function go(tab){
 }
 
 function rerenderCurrent(){
-  if(activeTab==='today')    renderToday();
+  if(activeTab==='today')    renderToday(false); // 入力中の値を保持
   if(activeTab==='weekly')   renderWeekly();
   if(activeTab==='history')  renderHistory();
 }
@@ -465,10 +465,21 @@ let editE   = {};
 
 function chgDate(n){ curDate=addD(curDate,n); renderToday() }
 
-function renderToday(){
+function renderToday(resetEdit){
   document.getElementById('hdDate').textContent     = jaDate(today());
   document.getElementById('todayTitle').textContent = jaDate(curDate);
-  editE = getE(curDate);
+  if(resetEdit !== false){
+    // 日付切替・タブ切替時：保存データを読み込む
+    editE = getE(curDate);
+  } else {
+    // Firebase同期時：現在の入力値をeditEに退避してから再描画
+    M.forEach(m => {
+      if(m.t !== 'bool' && m.t !== 'score'){
+        const inp = document.getElementById('inp_'+m.id);
+        if(inp){ const v=inp.value.trim(); editE[m.id] = v===''?0:parseFloat(v)||0; }
+      }
+    });
+  }
   const f = document.getElementById('entryForm');
   f.innerHTML = '';
 
