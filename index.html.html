@@ -69,6 +69,13 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 .btn-save{width:100%;padding:11px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:4px}
 .btn-save:active{background:#1557b0}
 
+/* ── 未入力ハイライト ── */
+.ci.unfilled{border:1.5px solid #fbbc04;background:#fffde7}
+.cs-wrap.unfilled{border:1.5px solid #fbbc04;background:#fffde7}
+/* ── 今日ナビのバッジ ── */
+.nav-btn{position:relative}
+.nbadge{position:absolute;top:4px;right:calc(50% - 20px);min-width:15px;height:15px;background:var(--red);color:#fff;border-radius:8px;font-size:.5rem;font-weight:700;display:none;align-items:center;justify-content:center;padding:0 3px;pointer-events:none;line-height:1}
+
 /* ── Weekly compact ── */
 .wk-title{font-size:.63rem;font-weight:700;color:var(--sub);margin:0 0 4px 2px;letter-spacing:.06em;text-transform:uppercase}
 .wp-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:7px}
@@ -256,7 +263,7 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 </div>
 
 <div class="bottom-nav">
-  <button class="nav-btn on"  id="nav-today"    onclick="go('today')">   <span class="ico">✏️</span>今日</button>
+  <button class="nav-btn on"  id="nav-today"    onclick="go('today')">   <span class="ico">✏️</span>今日<span class="nbadge" id="todayBadge"></span></button>
   <button class="nav-btn"     id="nav-weekly"   onclick="go('weekly')">  <span class="ico">📊</span>週間</button>
   <button class="nav-btn"     id="nav-history"  onclick="go('history')"> <span class="ico">📅</span>履歴</button>
   <button class="nav-btn"     id="nav-settings" onclick="go('settings')"><span class="ico">⚙️</span>設定</button>
@@ -482,6 +489,7 @@ function renderToday(resetEdit){
   }
   const f = document.getElementById('entryForm');
   f.innerHTML = '';
+  const saved = localData[curDate] || {}; // 保存済みデータ（未入力判定に使う）
 
   // ── 数値・体重（2列グリッド）──
   const numMs = M.filter(m => m.grp === 'num');
@@ -493,6 +501,8 @@ function renderToday(resetEdit){
     if(m.t === 'weight') tgtTxt = `目標${m.tgt}kg`;
     else if(m.wt) tgtTxt = `週${m.wt}${m.unit||'回'}`;
     const card = document.createElement('div'); card.className = 'ci';
+    // 保存されていないフィールドはオレンジ枠（未入力）
+    if(saved[m.id] == null || saved[m.id] === '') card.classList.add('unfilled');
     card.innerHTML = `<div class="ci-head">
       <span class="ci-name">${m.name}</span>
       <span class="ci-tgt">${tgtTxt}</span>
@@ -537,6 +547,7 @@ function renderToday(resetEdit){
   if(sm){
     const sv = editE[sm.id] || 0;
     const sw = document.createElement('div'); sw.className = 'cs-wrap cg-full';
+    if(saved[sm.id] == null) sw.classList.add('unfilled'); // 未入力
     sw.innerHTML = `<div class="cs-head">
       <span class="cs-name">${sm.name}</span>
       <span class="cs-tgt">週目標 ${sm.wt}pt</span>
@@ -574,6 +585,20 @@ function renderToday(resetEdit){
   }
 }
 
+// ── 未入力カウント＆バッジ更新 ──
+function countUnfilled(date){
+  const sv = localData[date] || {};
+  return M.filter(m => m.grp === 'num' || m.grp === 'score')
+          .filter(m => sv[m.id] == null || sv[m.id] === '').length;
+}
+function updateTodayBadge(){
+  const n = countUnfilled(today());
+  const b = document.getElementById('todayBadge');
+  if(!b) return;
+  b.textContent = n;
+  b.style.display = n > 0 ? 'flex' : 'none';
+}
+
 function setScore(id, val, btn){
   editE[id] = val;
   btn.closest('.cs-row').querySelectorAll('.cs-btn').forEach((b,i) => b.classList.toggle('on', i < val));
@@ -597,6 +622,8 @@ function saveEntry(){
   });
   putE(curDate, editE);
   showToast('保存しました ✓');
+  renderToday(false); // 未入力ハイライトを再評価
+  updateTodayBadge();
 }
 
 // ══════════════════════════════════════════════
@@ -855,6 +882,7 @@ function showToast(msg){
 initConfig();
 localData = loadLocal();
 renderToday();
+updateTodayBadge();
 setSyncSt(fbBase()?'syncing':'off');
 if(fbBase()){ fbLoad(); fbStream(); }
 </script>
