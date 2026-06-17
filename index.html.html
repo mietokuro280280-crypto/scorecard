@@ -277,8 +277,7 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 const M = [
   { id:'undou',     name:'運動',             unit:'回',   t:'num',   wt:5,   step:.5,  grp:'num' },
   { id:'sleep',     name:'睡眠時間',         unit:'時間', t:'num',   wt:49,  step:.5,  grp:'num' },
-  { id:'sedori',    name:'せどり',           unit:'分',   t:'num',   wt:300, step:10,  grp:'num' },
-  { id:'kendama',   name:'けん玉',           unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
+  { id:'trump',     name:'トランプ',         unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
   { id:'kodomo',    name:'子供との時間',      unit:'分',   t:'num',   wt:420, step:10,  grp:'num' },
   { id:'weight',    name:'体重',             unit:'kg',   t:'weight',tgt:62, maxKg:66, step:.1,  grp:'num' },
   { id:'yotei',     name:'明日の予定',        unit:'',     t:'bool',  wt:5,   grp:'bool' },
@@ -768,14 +767,14 @@ function renderHistory(){
     card.innerHTML=`<div class="hw-hd"><span>${title}</span><span>${ach}/${tot} 達成</span></div>`;
     days.forEach(d=>{
       const e=localData[d]||{}, dd=new Date(d+'T00:00:00'), w=['日','月','火','水','木','金','土'];
-      const parts=[e.undou?`運動${e.undou}`:'',e.sedori?`せどり${e.sedori}分`:'',e.kendama?`けん玉${e.kendama}分`:'',e.sleep?`睡眠${e.sleep}h`:'',e.weight?`${e.weight}kg`:''].filter(Boolean);
+      const parts=[e.undou?`運動${e.undou}`:'',e.trump?`トランプ${e.trump}分`:'',e.sleep?`睡眠${e.sleep}h`:'',e.weight?`${e.weight}kg`:''].filter(Boolean);
       const row=document.createElement('div'); row.className='hd-row';
       row.innerHTML=`<span class="hd-lbl">${dd.getMonth()+1}月${dd.getDate()}日(${w[dd.getDay()]})</span><span class="hd-info">${parts.join(' · ')}</span>`;
       row.onclick=()=>{ curDate=d; go('today') };
       card.appendChild(row);
     });
     const sr=document.createElement('div'); sr.className='hw-sum';
-    sr.innerHTML=`<span>週合計</span><span>運動${T.undou} せどり${T.sedori}分 けん玉${T.kendama}分</span>`;
+    sr.innerHTML=`<span>週合計</span><span>運動${T.undou} トランプ${T.trump}分</span>`;
     card.appendChild(sr);
     c.appendChild(card);
   });
