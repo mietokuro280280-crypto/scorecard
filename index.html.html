@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>スコアカード v3</title>
+<title>スコアカード v4</title>
 <style>
 :root{--blue:#1a73e8;--green:#34a853;--yellow:#f9ab00;--red:#ea4335;--bg:#f1f3f4;--card:#fff;--text:#202124;--sub:#5f6368;--border:#dadce0}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -277,7 +277,8 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 const M = [
   { id:'undou',     name:'運動',             unit:'回',   t:'num',   wt:5,   step:.5,  grp:'num' },
   { id:'sleep',     name:'睡眠時間',         unit:'時間', t:'num',   wt:49,  step:.5,  grp:'num' },
-  { id:'kendama',   name:'けん玉',           unit:'分',   t:'num',   wt:900, step:10,  grp:'num', prevId:'trump' },
+  { id:'kendama',   name:'けん玉',           unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
+  { id:'trump',     name:'トランプ',         unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
   { id:'kodomo',    name:'子供との時間',      unit:'分',   t:'num',   wt:420, step:10,  grp:'num' },
   { id:'weight',    name:'体重',             unit:'kg',   t:'weight',tgt:62, maxKg:66, step:.1,  grp:'num' },
   { id:'yotei',     name:'明日の予定',        unit:'',     t:'bool',  wt:5,   grp:'bool' },
