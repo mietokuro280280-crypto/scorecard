@@ -277,7 +277,7 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 const M = [
   { id:'undou',     name:'運動',             unit:'回',   t:'num',   wt:5,   step:.5,  grp:'num' },
   { id:'sleep',     name:'睡眠時間',         unit:'時間', t:'num',   wt:49,  step:.5,  grp:'num' },
-  { id:'trump',     name:'トランプ',         unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
+  { id:'trump',     name:'トランプ',         unit:'分',   t:'num',   wt:900, step:10,  grp:'num', prevId:'kendama' },
   { id:'kodomo',    name:'子供との時間',      unit:'分',   t:'num',   wt:420, step:10,  grp:'num' },
   { id:'weight',    name:'体重',             unit:'kg',   t:'weight',tgt:62, maxKg:66, step:.1,  grp:'num' },
   { id:'yotei',     name:'明日の予定',        unit:'',     t:'bool',  wt:5,   grp:'bool' },
@@ -421,7 +421,14 @@ function setSyncSt(st){
 // ══════════════════════════════════════════════
 //  DATA ACCESSORS
 // ══════════════════════════════════════════════
-function getE(k){ return {...(localData[k]||{})} }
+function getE(k){
+  const e = {...(localData[k]||{})};
+  // 項目のIDが変わった場合、旧IDのデータを新IDで読み込む
+  M.forEach(m => {
+    if(m.prevId && e[m.id] == null && e[m.prevId] != null) e[m.id] = e[m.prevId];
+  });
+  return e;
+}
 function putE(k, e){
   localData[k] = e;
   saveLocal();
