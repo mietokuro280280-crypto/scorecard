@@ -777,8 +777,29 @@ function renderWeekly(){
 //  HISTORY TAB
 // ══════════════════════════════════════════════
 // 入力項目から外れたが記録だけ残したいフィールド
+const LEGACY_FIELDS = [
+  { id:'kendama', name:'けん玉', unit:'分' },
+  { id:'sedori',  name:'せどり', unit:'分' },
+];
 function legacySum(days, key){
   return days.reduce((s,d)=>{ const v=(localData[d]||{})[key]; return s+(v!=null&&v!==''?(parseFloat(v)||0):0) },0);
+}
+// その日に値が入っている全項目を文字列の配列で返す（M配列＋過去項目）
+function dayParts(e){
+  const parts=[];
+  M.forEach(m=>{
+    const v=e[m.id];
+    if(v==null||v==='') return;
+    if(m.t==='bool'){ if(v===1) parts.push(m.name); }
+    else if(m.t==='score'){ if(v>0) parts.push(`${m.name}${v}pt`); }
+    else if(m.t==='weight'){ parts.push(`${v}kg`); }
+    else { parts.push(`${m.name}${v}${m.unit||''}`); }
+  });
+  LEGACY_FIELDS.forEach(l=>{
+    const v=e[l.id];
+    if(v!=null&&v!==''&&parseFloat(v)>0) parts.push(`${l.name}${v}${l.unit}`);
+  });
+  return parts;
 }
 
 function renderHistory(){
@@ -797,7 +818,7 @@ function renderHistory(){
     card.innerHTML=`<div class="hw-hd"><span>${title}</span><span>${ach}/${tot} 達成</span></div>`;
     days.forEach(d=>{
       const e=localData[d]||{}, dd=new Date(d+'T00:00:00'), w=['日','月','火','水','木','金','土'];
-      const parts=[e.undou?`運動${e.undou}`:'',e.kendama?`けん玉${e.kendama}分`:'',e.sedori?`せどり${e.sedori}分`:'',e.sleep?`睡眠${e.sleep}h`:'',e.weight?`${e.weight}kg`:''].filter(Boolean);
+      const parts=dayParts(e);
       const row=document.createElement('div'); row.className='hd-row';
       row.innerHTML=`<span class="hd-lbl">${dd.getMonth()+1}月${dd.getDate()}日(${w[dd.getDay()]})</span><span class="hd-info">${parts.join(' · ')}</span>`;
       row.onclick=()=>{ curDate=d; go('today') };
