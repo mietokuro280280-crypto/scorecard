@@ -753,6 +753,24 @@ function renderWeekly(){
   });
   mWrap.appendChild(mcGrid);
   c.appendChild(mWrap);
+
+  // ── 過去の記録（入力項目から外れたが記録は残したいもの）──
+  const LEGACY = [
+    { id:'kendama', name:'けん玉', unit:'分' },
+    { id:'sedori',  name:'せどり', unit:'分' },
+  ];
+  const lWrap=document.createElement('div');
+  lWrap.innerHTML='<div class="wk-title">過去の記録</div>';
+  const lGrid=document.createElement('div'); lGrid.className='wp-grid';
+  LEGACY.forEach(l=>{
+    const sum=legacySum(dates,l.id);
+    const item=document.createElement('div'); item.className='wp-item';
+    item.innerHTML=`<div class="wp-name">${l.name}</div>
+      <div class="wp-vals"><span class="wp-cur">${sum}${l.unit}</span></div>`;
+    lGrid.appendChild(item);
+  });
+  lWrap.appendChild(lGrid);
+  c.appendChild(lWrap);
 }
 
 // ══════════════════════════════════════════════
