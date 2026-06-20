@@ -792,8 +792,8 @@ function dayParts(e){
     if(v==null||v==='') return;
     if(m.t==='bool'){ if(v===1) parts.push(m.name); }
     else if(m.t==='score'){ if(v>0) parts.push(`${m.name}${v}pt`); }
-    else if(m.t==='weight'){ parts.push(`${v}kg`); }
-    else { parts.push(`${m.name}${v}${m.unit||''}`); }
+    else if(m.t==='weight'){ if(parseFloat(v)>0) parts.push(`${v}kg`); }
+    else { if(parseFloat(v)>0) parts.push(`${m.name}${v}${m.unit||''}`); }
   });
   LEGACY_FIELDS.forEach(l=>{
     const v=e[l.id];
