@@ -109,8 +109,16 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 .card-title{font-size:.78rem;font-weight:700;color:var(--sub);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase}
 .hw{background:#fff;border-radius:14px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
 .hw-hd{background:#f8f9ff;padding:9px 14px;font-size:.8rem;font-weight:700;color:var(--blue);border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
-.hd-row{padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f5f5f5;cursor:pointer}
-.hd-lbl{font-size:.83rem}.hd-info{font-size:.75rem;color:var(--sub)}
+.hd-row{padding:9px 14px;border-bottom:1px solid #f5f5f5;cursor:pointer}
+.hd-row:active{background:#f8f9fa}
+.hd-top{margin-bottom:5px}
+.hd-lbl{font-size:.83rem;font-weight:700;color:var(--text)}
+.hd-chips{display:flex;flex-wrap:wrap;gap:4px}
+.hd-chip{background:#f1f3f4;color:var(--sub);font-size:.66rem;font-weight:600;padding:3px 8px;border-radius:9px;white-space:nowrap}
+.hd-chip-bool{background:#e6f4ea;color:var(--green)}
+.hd-chip-score{background:#fff8e1;color:#e65100}
+.hd-chip-legacy{background:#f1f3f4;color:#9aa0a6}
+.hd-empty{font-size:.7rem;color:#ccc}
 .hw-sum{background:#f8f9fa;padding:7px 14px;display:flex;justify-content:space-between;font-size:.78rem;font-weight:600;color:var(--sub)}
 
 /* ── Settings ── */
@@ -790,14 +798,14 @@ function dayParts(e){
   M.forEach(m=>{
     const v=e[m.id];
     if(v==null||v==='') return;
-    if(m.t==='bool'){ if(v===1) parts.push(m.name); }
-    else if(m.t==='score'){ if(v>0) parts.push(`${m.name}${v}pt`); }
-    else if(m.t==='weight'){ if(parseFloat(v)>0) parts.push(`${v}kg`); }
-    else { if(parseFloat(v)>0) parts.push(`${m.name}${v}${m.unit||''}`); }
+    if(m.t==='bool'){ if(v===1) parts.push({text:m.name, type:'bool'}); }
+    else if(m.t==='score'){ if(v>0) parts.push({text:`${m.name}${v}pt`, type:'score'}); }
+    else if(m.t==='weight'){ if(parseFloat(v)>0) parts.push({text:`${v}kg`, type:'num'}); }
+    else { if(parseFloat(v)>0) parts.push({text:`${m.name}${v}${m.unit||''}`, type:'num'}); }
   });
   LEGACY_FIELDS.forEach(l=>{
     const v=e[l.id];
-    if(v!=null&&v!==''&&parseFloat(v)>0) parts.push(`${l.name}${v}${l.unit}`);
+    if(v!=null&&v!==''&&parseFloat(v)>0) parts.push({text:`${l.name}${v}${l.unit}`, type:'legacy'});
   });
   return parts;
 }
@@ -820,7 +828,11 @@ function renderHistory(){
       const e=localData[d]||{}, dd=new Date(d+'T00:00:00'), w=['日','月','火','水','木','金','土'];
       const parts=dayParts(e);
       const row=document.createElement('div'); row.className='hd-row';
-      row.innerHTML=`<span class="hd-lbl">${dd.getMonth()+1}月${dd.getDate()}日(${w[dd.getDay()]})</span><span class="hd-info">${parts.join(' · ')}</span>`;
+      const chipsHtml=parts.length
+        ? parts.map(p=>`<span class="hd-chip hd-chip-${p.type}">${p.text}</span>`).join('')
+        : '<span class="hd-empty">記録なし</span>';
+      row.innerHTML=`<div class="hd-top"><span class="hd-lbl">${dd.getMonth()+1}月${dd.getDate()}日(${w[dd.getDay()]})</span></div>
+        <div class="hd-chips">${chipsHtml}</div>`;
       row.onclick=()=>{ curDate=d; go('today') };
       card.appendChild(row);
     });
