@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>スコアカード v4</title>
+<title>スコアカード v5</title>
 <style>
 :root{--blue:#1a73e8;--green:#34a853;--yellow:#f9ab00;--red:#ea4335;--bg:#f1f3f4;--card:#fff;--text:#202124;--sub:#5f6368;--border:#dadce0}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -188,7 +188,7 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 <body>
 
 <div class="header">
-  <h1>📊 スコアカード <span style="font-size:.6rem;opacity:.6;font-weight:400">v4</span></h1>
+  <h1>📊 スコアカード <span style="font-size:.6rem;opacity:.6;font-weight:400">v5</span></h1>
   <div class="hdr-right">
     <span class="sync-dot" id="syncDot" title="同期状態" onclick="go('settings')">⚫</span>
     <div class="header-date" id="hdDate"></div>
@@ -292,6 +292,7 @@ const M = [
   { id:'dokusho',   name:'読書',             unit:'',     t:'bool',  wt:5,   grp:'bool' },
   { id:'unko',      name:'うんこ',           unit:'',     t:'bool',  wt:5,   grp:'bool' },
   { id:'koe',       name:'声かけ',           unit:'',     t:'bool',  wt:7,   daily:true, grp:'bool' },
+  { id:'ataeta',    name:'与えたか',         unit:'',     t:'bool',  wt:3,   grp:'bool' },
   { id:'tanoshisa', name:'楽しさ',           unit:'pt',   t:'score', wt:25,  grp:'score' },
   { id:'kyuka',     name:'有給',             unit:'回',   t:'bool',  mt:2,   monthly:true, grp:'month' },
   { id:'sasou',     name:'誘い',             unit:'回',   t:'bool',  mt:1,   monthly:true, grp:'month' },
