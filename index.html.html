@@ -285,7 +285,7 @@ body{font-family:'Hiragino Sans','Yu Gothic UI',sans-serif;background:var(--bg);
 const M = [
   { id:'undou',     name:'運動',             unit:'回',   t:'num',   wt:5,   step:.5,  grp:'num' },
   { id:'sleep',     name:'睡眠時間',         unit:'時間', t:'num',   wt:49,  step:.5,  grp:'num' },
-  { id:'trump',     name:'トランプ',         unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
+  { id:'juggling',  name:'ジャグリング',      unit:'分',   t:'num',   wt:900, step:10,  grp:'num' },
   { id:'kodomo',    name:'子供との時間',      unit:'分',   t:'num',   wt:420, step:10,  grp:'num' },
   { id:'weight',    name:'体重',             unit:'kg',   t:'weight',tgt:62, maxKg:66, step:.1,  grp:'num' },
   { id:'yotei',     name:'明日の予定',        unit:'',     t:'bool',  wt:5,   grp:'bool' },
@@ -767,6 +767,7 @@ function renderWeekly(){
   const LEGACY = [
     { id:'kendama', name:'けん玉', unit:'分' },
     { id:'sedori',  name:'せどり', unit:'分' },
+    { id:'trump',   name:'トランプ', unit:'分' },
   ];
   const lWrap=document.createElement('div');
   lWrap.innerHTML='<div class="wk-title">過去の記録</div>';
@@ -789,6 +790,7 @@ function renderWeekly(){
 const LEGACY_FIELDS = [
   { id:'kendama', name:'けん玉', unit:'分' },
   { id:'sedori',  name:'せどり', unit:'分' },
+  { id:'trump',   name:'トランプ', unit:'分' },
 ];
 function legacySum(days, key){
   return days.reduce((s,d)=>{ const v=(localData[d]||{})[key]; return s+(v!=null&&v!==''?(parseFloat(v)||0):0) },0);
@@ -837,9 +839,9 @@ function renderHistory(){
       row.onclick=()=>{ curDate=d; go('today') };
       card.appendChild(row);
     });
-    const kendamaSum=legacySum(days,'kendama'), sedoriSum=legacySum(days,'sedori');
+    const kendamaSum=legacySum(days,'kendama'), sedoriSum=legacySum(days,'sedori'), trumpSum=legacySum(days,'trump');
     const sr=document.createElement('div'); sr.className='hw-sum';
-    sr.innerHTML=`<span>週合計</span><span>運動${T.undou} けん玉${kendamaSum}分 せどり${sedoriSum}分</span>`;
+    sr.innerHTML=`<span>週合計</span><span>運動${T.undou} けん玉${kendamaSum}分 せどり${sedoriSum}分 トランプ${trumpSum}分</span>`;
     card.appendChild(sr);
     c.appendChild(card);
   });
