@@ -474,7 +474,11 @@ function go(tab){
 }
 
 function rerenderCurrent(){
-  if(activeTab==='today')    renderToday(false); // 入力中の値を保持
+  if(activeTab==='today'){
+    const ae = document.activeElement;
+    if(ae && ae.classList && ae.classList.contains('cn-inp')) return; // 数字入力中は自動更新で割り込まない
+    renderToday(false); // 入力中の値を保持
+  }
   if(activeTab==='weekly')   renderWeekly();
   if(activeTab==='history')  renderHistory();
 }
